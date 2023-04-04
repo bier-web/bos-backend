@@ -88,32 +88,32 @@
     <div id="js-examples" class="tab-pane">
     <p>BOS Dashboard generates a browser JavaScript API</a> for easily accessing data from the <code><%= '/' + resourceData.id %></code> collection. To use it you first need to include the generated script.</p>
 
-    <pre class="prettyprint code">&lt;script src="bosDahboard.js"&gt;&lt;/script&gt;</pre>
+    <pre class="prettyprint code">&lt;script src="bos-backend.js"&gt;&lt;/script&gt;</pre>
 
     <% if (resourceData.type === 'UserCollection') { %>
     <p>Register a new user in the <code><%= '/' + resourceData.id %></code> collection:</p>
     <pre class="code prettyprint">
-bosDahboard<%= ns('/' + resourceData.id) %>.post({"username": "foo@bar.com", "password": "mypassword"}, function(user, err) {
+bosBackend<%= ns('/' + resourceData.id) %>.post({"username": "foo@bar.com", "password": "mypassword"}, function(user, err) {
   if(err) return console.log(err);
   console.log(user);
 });</pre>
 
     <p>Login an existing user in the <code><%= '/' + resourceData.id %></code> collection:</p>
     <pre class="code prettyprint">
-bosDahboard<%= ns('/' + resourceData.id) %>.login({"username": "foo@bar.com", "password": "mypassword"}, function(user, err) {
+bosBackend<%= ns('/' + resourceData.id) %>.login({"username": "foo@bar.com", "password": "mypassword"}, function(user, err) {
   if(err) return console.log(err);
   console.log(user);
 });</pre>
 
     <p>Get the current user in the <code><%= '/' + resourceData.id %></code> collection:</p>
     <pre class="code prettyprint">
-bosDahboard<%= ns('/' + resourceData.id) %>.me(function(me) {
+bosBackend<%= ns('/' + resourceData.id) %>.me(function(me) {
   console.log(me);
 });</pre>
 
     <p>Logout the current user in the <code><%= '/' + resourceData.id %></code> collection:</p>
     <pre class="code prettyprint">
-bosDahboard<%= ns('/' + resourceData.id) %>.logout(function(err) {
+bosBackend<%= ns('/' + resourceData.id) %>.logout(function(err) {
   if(err) console.log(err);
 });</pre>
       
@@ -121,7 +121,7 @@ bosDahboard<%= ns('/' + resourceData.id) %>.logout(function(err) {
 
     <p>Insert data into the <code><%= '/' + resourceData.id %></code> collection:</p>
     <pre class="code prettyprint">
-bosDahboard<%= ns('/' + resourceData.id) %>.post(<%= getObj() %>, function(result, err) {
+bosBackend<%= ns('/' + resourceData.id) %>.post(<%= getObj() %>, function(result, err) {
   if(err) return console.log(err);
   console.log(result, result.id);
 });</pre>
@@ -130,7 +130,7 @@ bosDahboard<%= ns('/' + resourceData.id) %>.post(<%= getObj() %>, function(resul
 
     <p>Get all the objects in the <code><%= '/' + resourceData.id %></code> collection:</p>
     <pre class="code prettyprint">
-bosDahboard<%= ns('/' + resourceData.id) %>.get(function (result, err) {
+bosBackend<%= ns('/' + resourceData.id) %>.get(function (result, err) {
   if(err) return console.log(err);
   console.log(result);
 });</pre>
@@ -139,26 +139,26 @@ bosDahboard<%= ns('/' + resourceData.id) %>.get(function (result, err) {
     <pre class="code prettyprint">
 var query = <%= getObj() %>;
 
-bosDahboard<%= ns('/' + resourceData.id) %>.get(query, function (result) {
+bosBackend<%= ns('/' + resourceData.id) %>.get(query, function (result) {
   console.log(result);
 });</pre>
 
     <p>Get a single object in the <code><%= '/' + resourceData.id %></code> collection by id:</p>
     <pre class="code prettyprint">
-bosDahboard<%= ns('/' + resourceData.id) %>.get("000000000000000000000000", function (result) {
+bosBackend<%= ns('/' + resourceData.id) %>.get("000000000000000000000000", function (result) {
   console.log(result);
 });</pre>
 
     <p>Update an object in the <code><%= '/' + resourceData.id %></code> collection:</p>
     <pre class="code prettyprint">
-bosDahboard<%= ns('/' + resourceData.id) %>.put("000000000000000000000000", <%= getObj() %>, function(result, err) {
+bosBackend<%= ns('/' + resourceData.id) %>.put("000000000000000000000000", <%= getObj() %>, function(result, err) {
   if(err) return console.log(err);
   console.log(result, result.id);
 });</pre>
 
     <p>Remove a single object from the <code><%= '/' + resourceData.id %></code> collection:</p>
     <pre class="code prettyprint">
-bosDahboard<%= ns('/' + resourceData.id) %>.del("000000000000000000000000", function (err) {
+bosBackend<%= ns('/' + resourceData.id) %>.del("000000000000000000000000", function (err) {
   if(err) console.log(err);
 });</pre>
 

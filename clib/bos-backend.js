@@ -1,5 +1,5 @@
 (function (undefined) {
-	if (!window._bosDahboard) window._bosDahboard = {};
+	if (!window._bosBackend) window._bosBackend = {};
 
 	var root = null;
 
@@ -107,7 +107,7 @@
 			.then(function (res) {
 				var sessionId = res.raw.getResponseHeader('X-Session-Token');
 				if (sessionId) {
-					window.bosDashboard.setSessionId(sessionId);
+					window.bosBackend.setSessionId(sessionId);
 				}
 				return res;
 			})
@@ -126,7 +126,7 @@
 			var query = encodeIfComplex(options.query);
 
 			return unwrapPromise(
-				_bosDahboard.ajax(root + joinPath(BASE_URL, options.path), {
+				_bosBackend.ajax(root + joinPath(BASE_URL, options.path), {
 					method: 'GET',
 					query: query
 				}),
@@ -137,7 +137,7 @@
 			var query = encodeIfComplex(options.query);
 
 			return unwrapPromise(
-				_bosDahboard.ajax(root + joinPath(BASE_URL, options.path), {
+				_bosBackend.ajax(root + joinPath(BASE_URL, options.path), {
 					method: 'DELETE',
 					query: query
 				}),
@@ -150,7 +150,7 @@
 			else query = '';
 
 			return unwrapPromise(
-				_bosDahboard.ajax(root + joinPath(BASE_URL, options.path) + query, {
+				_bosBackend.ajax(root + joinPath(BASE_URL, options.path) + query, {
 					method: method,
 					contentType: options.body && 'application/json',
 					data: JSON.stringify(options.body || {}) || '{}'
@@ -236,7 +236,7 @@
 		return settings;
 	}
 
-	window.bosDashboard = function (resource) {
+	window.bosBackend = function (resource) {
 		var r = {
 			get: function (func, path, query, fn) {
 				var settings = parseGetSignature(arguments);
@@ -313,7 +313,7 @@
 			} else {
 				var element = document.currentScript;
 				if (!element) {
-					element = document.querySelector('script[src$="bosDashboard.js"]');
+					element = document.querySelector('script[src$="bos-backend.js"]');
 				}
 				if (element) {
 					var src = element.src || '';
@@ -337,7 +337,7 @@
 				socket.io.disconnect();
 			}
 			socket = null;
-			window.bosDahboard.socket = null;
+			window.bosBackend.socket = null;
 		}
 	}
 
@@ -346,34 +346,34 @@
 	function checkAndConnectSocketIO() {
 		if (!socket) {
 			socket = io.connect(root);
-			window.bosDahboard.socket = socket;
-			window.bosDahboard.once('connect', function () {
+			window.bosBackend.socket = socket;
+			window.bosBackend.once('connect', function () {
 				isSocketReady = true;
 			});
-			window.bosDahboard.on('reconnect', function () {
-				if (_sessionId) window.bosDahboard.setSessionId(_sessionId, true);
+			window.bosBackend.on('reconnect', function () {
+				if (_sessionId) window.bosBackend.setSessionId(_sessionId, true);
 			});
 		}
 	}
 
-	window.bosDahboard.setBaseUrl = setBaseUrl;
-	window.bosDahboard.getBaseUrl = getBaseUrl;
+	window.bosBackend.setBaseUrl = setBaseUrl;
+	window.bosBackend.getBaseUrl = getBaseUrl;
 
-	window.bosDahboard.setSessionId = function (sessionId, force) {
+	window.bosBackend.setSessionId = function (sessionId, force) {
 		if (force || sessionId != _sessionId) {
-			window.bosDahboard.socketReady(function () {
-				window.bosDahboard.socket.emit('server:setSession', { sid: sessionId });
+			window.bosBackend.socketReady(function () {
+				window.bosBackend.socket.emit('server:setSession', { sid: sessionId });
 				_sessionId = sessionId;
 			});
 		}
 	};
 
-	window.bosDahboard.on = function () {
+	window.bosBackend.on = function () {
 		checkAndConnectSocketIO();
 		socket.on.apply(socket, arguments);
 	};
 
-	window.bosDahboard.once = function (name, fn) {
+	window.bosBackend.once = function (name, fn) {
 		checkAndConnectSocketIO();
 		var _fn = function () {
 			socket.removeListener(name, _fn);
@@ -382,7 +382,7 @@
 		socket.on(name, _fn);
 	};
 
-	window.bosDahboard.off = function (name, fn) {
+	window.bosBackend.off = function (name, fn) {
 		checkAndConnectSocketIO();
 		if (fn == null) {
 			socket.removeAllListeners(name);
@@ -393,12 +393,12 @@
 
 	var isSocketReady = false;
 
-	window.bosDahboard.socketReady = function (fn) {
+	window.bosBackend.socketReady = function (fn) {
 		checkAndConnectSocketIO();
 		if (isSocketReady) {
 			setTimeout(fn, 0);
 		} else {
-			window.bosDahboard.once('connect', fn);
+			window.bosBackend.once('connect', fn);
 		}
 	};
 
